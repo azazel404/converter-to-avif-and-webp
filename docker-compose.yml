@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    ports:
+      - '3001:3001'
+    environment:
+      PORT: 3001
+      HOST: 0.0.0.0
+      MAX_SINGLE_FILE_SIZE: 52428800
+      MAX_ZIP_SIZE: 524288000
+      MAX_FILES_PER_ZIP: 500
+      DEFAULT_QUALITY: 82
+      QUALITY_THRESHOLD: 0.95
+      WORKER_CONCURRENCY: 4
+      TEMP_DIR: /tmp/converter-jobs
+      JOB_TTL_MS: 3600000
+      CORS_ORIGINS: 'http://localhost:5173,http://localhost:3000'
+    tmpfs:
+      - /tmp/converter-jobs
+    restart: unless-stopped
